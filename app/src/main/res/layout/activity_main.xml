@@ -2,7 +2,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     android:orientation="vertical"
-    tools:context=".MainActivity" />
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ingresar monto en pesos" />
+
+    <EditText
+        android:id="@+id/etPesos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <RadioGroup
+        android:id="@+id/rgDolares"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:checkedButton="@id/rbBlue">
+
+        <RadioButton
+            android:id="@+id/rbBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dólar Blue" />
+
+        <RadioButton
+            android:id="@+id/rbBolsa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dólar Bolsa" />
+
+        <RadioButton
+            android:id="@+id/rbNacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dólar Banco Nación" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/cbAplicarImpuesto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Aplicar Impuesto Solidario"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnConvertir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:text="CONVERTIR A DOLAR" />
+
+    <TextView
+        android:id="@+id/txtResultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:textSize="24dp" />
+</LinearLayout>
