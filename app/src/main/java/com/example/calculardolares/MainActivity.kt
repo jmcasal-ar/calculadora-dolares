@@ -1,31 +1,47 @@
 package com.example.calculardolares
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
+import com.example.calculardolares.providers.PesosProvider
 
 const val DOLAR_BLUE = 133.0
 const val DOLAR_BOLSA = 120.46
 const val DOLAR_NACION = 78.25
 const val DOLAR_SOLIDARIO = DOLAR_NACION * 1.3
 
+const val SHARED_PREF_PESOS = "PESOS"
+const val POSICION = "POSICION"
+
 class MainActivity : AppCompatActivity() {
-    private lateinit var etPesos: EditText
+    private lateinit var spPesos: Spinner
     private lateinit var rgDolares: RadioGroup
     private lateinit var cbAplicarImpuesto: CheckBox
     private lateinit var btnConvertir: Button
     private lateinit var txtResultado: TextView
+    private lateinit var  toolbar: Toolbar
+
+    private val  sharedPreferences: SharedPreferences by lazy {
+        getSharedPreferences(SHARED_PREF_PESOS, Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //almacenamiento interno
         setupUI()
     }
 
     private fun setupUI() {
-        etPesos = findViewById(R.id.etPesos)
+        setupToolbar()
+        spPesos = findViewById(R.id.spPesos)
         rgDolares = findViewById(R.id.rgDolares)
         cbAplicarImpuesto = findViewById(R.id.cbAplicarImpuesto)
         btnConvertir = findViewById(R.id.btnConvertir)
@@ -37,6 +53,31 @@ class MainActivity : AppCompatActivity() {
         rgDolares.setOnCheckedChangeListener { group, checkedId ->
             onRadioButtonCheckedChange(checkedId)
         }
+        setupSpinner()
+    }
+
+    private fun setupToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Conversión dolares"
+    }
+
+    private fun setupSpinner() {
+
+        //OBTNER ULTIMA POSICIÓN POR MEMORIA
+        val ultimaPosicion = sharedPreferences.getInt(POSICION, 0)
+
+        val pesos = PesosProvider.providePesos()
+        //el adapter es para ir iterando cada vista
+        val adapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            pesos
+        )
+
+
+        spPesos.adapter = adapter
+        spPesos.setSelection(ultimaPosicion)
     }
 
     private fun onRadioButtonCheckedChange(checkedId: Int) {
@@ -56,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun realizarConversion() {
-        val pesos = etPesos.text.toString()
+        val pesos = spPesos.selectedItem.toString()
         //validamos que no este vacío
         if(pesos.isNotEmpty()){
 
@@ -93,5 +134,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun MostrarMensaje(mensaje: String) {
         Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStop() {
+        actualizarValorPosicionPreferencias()
+        super.onStop()
+    }
+
+    private fun actualizarValorPosicionPreferencias() {
+
+        //Nos permite no tener que repetir la variable.
+        sharedPreferences.edit().apply(){
+        putInt(POSICION, spPesos.selectedItemPosition)
+        apply()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.itemAyuda -> MostrarMensaje("Ayuda")
+            R.id.itemInfo -> MostrarMensaje("Información")
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

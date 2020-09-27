@@ -5,9 +5,14 @@
     android:id="@+id/LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
+    android:layout_margin="0dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/textView"
@@ -15,13 +20,12 @@
         android:layout_height="wrap_content"
         android:text="Ingresar monto en pesos" />
 
-    <EditText
-        android:id="@+id/etPesos"
+    <Spinner
+        android:id="@+id/spPesos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:inputType="numberDecimal" />
+        android:layout_margin="12dp"
+        android:padding="16dp" />
 
     <RadioGroup
         android:id="@+id/rgDolares"
@@ -72,4 +76,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:textSize="24dp" />
+
 </LinearLayout>
